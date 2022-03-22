@@ -21,7 +21,7 @@ def make_chains(text_string):
     A chain will be a key that consists of a tuple of (word1, word2)
     and the value would be a list of the word(s) that follow those two
     words in the input text.
-
+    
     For example:
 
         >>> chains = make_chains('hi there mary hi there juanita')
@@ -39,10 +39,33 @@ def make_chains(text_string):
         >>> chains[('there','juanita')]
         [None]
     """
-
     chains = {}
 
-    # your code goes here
+    # make a variable  
+    words = text_string.split()
+    #split words
+    for word in range(len(words)- 1):
+        keys = (words[word], words[word + 1])
+
+
+        if keys in chains:
+        # if words[word] and words[word + 2]:
+            try:
+                chains[keys].append(words[word + 2])
+            except:
+                print()
+        else:
+            try:
+                chains[keys] = [words[word + 2]]
+            except:
+                print()
+
+    #loop in pairs, for loop with range of len(text)-1
+    #make tuples
+    #set as keys in dictionary
+
+    #for each key find in words and save the next word as a value for that key
+
 
     return chains
 
