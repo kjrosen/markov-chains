@@ -81,32 +81,27 @@ def make_text(chains):
     # get a random word from the values for that key
     # get a random key that starts with the second element of the previous key
     current_key = choice(list(chains.keys()))
-    i = 0
-    while current_key in chains:
+
+    while True:
         for key in current_key:
             words.append(key)
 
         next_link = choice(chains[current_key])
-        words.append(next_link)
 
         possibilities = []
         for key in list(chains.keys()):
             if key[0] == next_link:
                 possibilities.append(key)
 
-        print(current_key)
-        print(i)
-        i += 1
-
         if len(possibilities) > 0:
             current_key = choice(possibilities)
-
-    print(possibilities)
+        else:
+            break
 
     return ' '.join(words)
 
 
-input_path = 'green-eggs.txt'
+input_path = 'gettysburg.txt'
 
 # Open the file and turn it into one long string
 input_text = open_and_read_file(input_path)
