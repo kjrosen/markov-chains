@@ -1,6 +1,8 @@
 """Generate Markov text from text files."""
 
+from curses.ascii import isupper
 from random import choice
+import sys
 
 
 def open_and_read_file(file_path):
@@ -80,28 +82,46 @@ def make_text(chains):
     # add that to the words list
     # get a random word from the values for that key
     # get a random key that starts with the second element of the previous key
-    current_key = choice(list(chains.keys()))
+    
+    upper_keys = []
+    for key in list(chains.keys()):
+        if key[0][0].isupper():
+            upper_keys.append(key)
+    
+    punctuation = (".", "!", "?")
+    current_key = choice(upper_keys)
 
     while True:
         for key in current_key:
             words.append(key)
 
         next_link = choice(chains[current_key])
+        if next_link.endswith(punctuation):
+            words.append(next_link)
+            break
 
         possibilities = []
         for key in list(chains.keys()):
             if key[0] == next_link:
                 possibilities.append(key)
 
-        if len(possibilities) > 0:
+        print(current_key)
+        
+        
+        if current_key[1].endswith(punctuation):
+            break
+
+        elif len(possibilities) > 0:
             current_key = choice(possibilities)
+
         else:
+            # words.append(next_link)
             break
 
     return ' '.join(words)
 
 
-input_path = 'gettysburg.txt'
+input_path = sys.argv[1]
 
 # Open the file and turn it into one long string
 input_text = open_and_read_file(input_path)
