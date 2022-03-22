@@ -76,6 +76,26 @@ def make_text(chains):
     words = []
 
     # your code goes here
+    # get a random key and convert to a list
+    # add that to the words list
+    # get a random word from the values for that key
+    # get a random key that starts with the second element of the previous key
+    current_key = choice(list(chains.keys()))
+
+    for key in current_key:
+        words.append(key)
+
+    next_link = choice(chains[current_key])
+    words.append(next_link)
+ li
+    possibilities = []
+    for key in list(chains.keys()):
+        if key[0] == next_link:
+            possibilities.append(key)
+
+    current_key = choice(possibilities)
+
+    print(possibilities)
 
     return ' '.join(words)
 
