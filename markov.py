@@ -41,33 +41,23 @@ def make_chains(text_string):
         >>> chains[('there','juanita')]
         [None]
     """
+    
     chains = {}
+    input_text = text_string.split()
 
-    # make a variable  
-    words = text_string.split()
-    #split words
-    for word in range(len(words)- 1):
-        keys = (words[word], words[word + 1])
-
+    for num in range(len(input_text) - 1):
+        keys = (input_text[num], input_text[num + 1])
 
         if keys in chains:
-        # if words[word] and words[word + 2]:
             try:
-                chains[keys].append(words[word + 2])
+                chains[keys].append(input_text[num + 2])
             except:
-                print()
+                pass
         else:
             try:
-                chains[keys] = [words[word + 2]]
+                chains[keys] = [input_text[num + 2]]
             except:
-                print()
-
-    #loop in pairs, for loop with range of len(text)-1
-    #make tuples
-    #set as keys in dictionary
-
-    #for each key find in words and save the next word as a value for that key
-
+                pass
 
     return chains
 
@@ -75,60 +65,48 @@ def make_chains(text_string):
 def make_text(chains):
     """Return text from chains."""
 
-    words = []
-
-    # your code goes here
-    # get a random key and convert to a list
-    # add that to the words list
-    # get a random word from the values for that key
-    # get a random key that starts with the second element of the previous key
-    
+    builded_text = []
     upper_keys = []
+    punctuation = (".", "!", "?")
+
     for key in list(chains.keys()):
         if key[0][0].isupper():
             upper_keys.append(key)
     
-    punctuation = (".", "!", "?")
     current_key = choice(upper_keys)
+    sentences = 0
 
     while True:
         for key in current_key:
-            words.append(key)
+            builded_text.append(key)
 
         next_link = choice(chains[current_key])
-        if next_link.endswith(punctuation):
-            words.append(next_link)
-            break
-
         possibilities = []
+
         for key in list(chains.keys()):
             if key[0] == next_link:
                 possibilities.append(key)
-
-        print(current_key)
-        
         
         if current_key[1].endswith(punctuation):
+            # sentences += 1
+            break
+        elif len(possibilities) == 0:
+            if not current_key[1].endswith(punctuation):
+                builded_text.append(next_link)
             break
 
-        elif len(possibilities) > 0:
-            current_key = choice(possibilities)
+        current_key = choice(possibilities)
 
-        else:
-            # words.append(next_link)
-            break
 
-    return ' '.join(words)
+    return ' '.join(builded_text)
 
 
 input_path = sys.argv[1]
 
 # Open the file and turn it into one long string
 input_text = open_and_read_file(input_path)
-
 # Get a Markov chain
 chains = make_chains(input_text)
-
 # Produce random text
 random_text = make_text(chains)
 
